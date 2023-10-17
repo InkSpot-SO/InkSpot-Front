@@ -1,0 +1,45 @@
+<form nz-form [formGroup]="validateForm" class="auth-form" (ngSubmit)="submitForm()">
+  <h1 nz-typography>
+    Register
+  </h1>
+  <nz-form-item>
+    <nz-form-control nzErrorTip="Please enter a valid email.">
+      <nz-input-group nzPrefixIcon="user">
+        <input type="text" nz-input formControlName="username" placeholder="Email" />
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-control nzErrorTip="Please enter a valid/stronger passsword (12 char 1 special 1 number 1U 1L )">
+      <nz-input-group nzPrefixIcon="lock">
+        <input type="password" nz-input formControlName="password" placeholder="Password" />
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-control nzErrorTip="Passwords does not match.">
+      <nz-input-group nzPrefixIcon="check">
+        <input type="password" nz-input formControlName="passwordConfirm" placeholder="Password" />
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-control nzErrorTip="Please input your First Name! Min 3 chars">
+      <nz-input-group nzPrefixIcon="user">
+        <input type="text" nz-input formControlName="firstName" placeholder="First Name" />
+      </nz-input-group>
+    </nz-form-control>
+    </nz-form-item>
+  <nz-form-item>
+    <nz-form-control nzErrorTip="Please input your Last Name! Min 3 chars">
+      <nz-input-group nzPrefixIcon="user">
+        <input type="text" nz-input formControlName="lastName" placeholder="Last Name" />
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+
+  <button nz-button class="auth-form-button auth-form-margin" [nzType]="'primary'">Register</button>
+  Or
+  <a [routerLink]="'/auth/login'">login now!</a>
+</form>

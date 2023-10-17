@@ -1,3 +1,27 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+body,html {
+ @apply
+  h-full
+  w-full
+  m-0
+  p-0
+  overflow-hidden
+}
+
+
+nz-content,nz-layout {
+  @apply
+  h-full;
+}
+ik-auth,ik-common {
+  @apply
+  contents
+}
+ik-login,ik-register {
+  @apply
+  w-80
+}
