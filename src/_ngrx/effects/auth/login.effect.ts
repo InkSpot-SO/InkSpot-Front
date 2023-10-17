@@ -25,7 +25,7 @@ export class AuthEffects {
       this.actions$.pipe(
         ofType(loginSuccess),
         map(action => {
-          this.router.navigate(['/common/home']);
+          this.router.navigate(['']);
           return action;
         })
       ),
@@ -54,6 +54,7 @@ export class AuthEffects {
       ),
     { dispatch: false }
   );
+
 
   constructor(
     private actions$: Actions,

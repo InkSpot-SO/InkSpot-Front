@@ -9,6 +9,7 @@ export const ENV = {
   },
   SERVER_URLS: {
     API : {
+      IMAGE :'http://127.0.0.1:8000',
       LOGIN : `${API_URL}/login_check`,
       REGISTER : `${API_URL}/register`,
       BASE : API_URL,

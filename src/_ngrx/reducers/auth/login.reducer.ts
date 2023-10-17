@@ -22,6 +22,7 @@ export const authReducer = createReducer(
     return { ...state, user: null };
   }),
   on(loginSuccess, (state, { user }) => {
+    console.log('loginSuccess', user);
     localStorage.setItem(ENV.IK.LOCAL_STORAGE.AUTH_USER, JSON.stringify(user));
     return { ...state, user, loading: false };
   }),

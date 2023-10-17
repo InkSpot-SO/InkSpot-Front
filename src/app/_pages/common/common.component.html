@@ -4,12 +4,12 @@
     <div class="logo"></div>
     <ul nz-menu nzTheme="dark" nzMode="inline">
       <!-- make profil submenu -->
-      <li nz-menu-item [nzMatchRouter]="true" [routerLink]="'/'">
+      <li nz-menu-item [nzMatchRouterExact]="true" [routerLink]="'/'">
         <i nz-icon nzType="file">
         </i>
         <span>Posts</span>
       </li>
-      <li nz-menu-item [nzMatchRouter]="true"[routerLink]="'/chat'">
+      <li nz-menu-item [nzMatchRouterExact]="true"[routerLink]="'/chat'">
         <i nz-icon nzType="message">
         </i>
         <span>Chat</span>

@@ -1,0 +1,10 @@
+
+<nz-list nzGrid>
+  <div nz-row [nzGutter]="16">
+    <div nz-col [nzXXl]="3" [nzXl]="8" [nzLg]="6" [nzMd]="6" [nzSm]="12" [nzXs]="24" *ngFor="let post of posts">
+      <nz-list-item>
+        <ik-post-list-item [post]="post"></ik-post-list-item>
+      </nz-list-item>
+    </div>
+  </div>
+</nz-list>

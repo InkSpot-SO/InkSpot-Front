@@ -22,6 +22,8 @@ import { AuthEffects } from 'src/_ngrx/effects/auth/login.effect';
 import { AuthentificationInterceptorInterceptor } from './_interceptor/authentification-interceptor.interceptor';
 import { NgZorroAntdModule } from './ng-zorro.module';
 import { ChatComponent } from './_pages/common/chat/chat.component';
+import { PaginatedPostListComponent } from './_components/page_section/post/paginated-post-list/paginated-post-list.component';
+import { PostListItemComponent } from './_components/page_section/post/post-list-item/post-list-item.component';
 registerLocaleData(fr);
 
 @NgModule({
@@ -32,7 +34,9 @@ registerLocaleData(fr);
     AuthComponent,
     CommonComponent,
     HomeComponent,
-    ChatComponent
+    ChatComponent,
+    PaginatedPostListComponent,
+    PostListItemComponent
   ],
   imports: [
     ReactiveFormsModule,

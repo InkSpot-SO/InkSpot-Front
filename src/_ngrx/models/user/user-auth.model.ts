@@ -4,6 +4,7 @@ export type IK_UserRole = "ROLE_USER" | "ROLE_ADMIN";
 export interface IK_UserAuth extends IK_UserDeepBase {
   username : string;
   token : string;
+  refresh_token : string;
   roles : IK_UserRole[];
 }
 

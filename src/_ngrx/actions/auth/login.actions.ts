@@ -5,3 +5,4 @@ export const login = createAction('[Auth] Login', props<{ user: IK_UserAuthReque
 export const logout = createAction('[Auth] Logout');
 export const loginFailure = createAction('[Auth] Login Failure', props<{ error: string }>());
 export const loginSuccess = createAction('[Auth] Login Success', props<{ user: IK_UserAuth }>());
+export const loginRefreshToken = createAction('[Auth] Login Refresh Token', props<{ user: IK_UserAuth }>());

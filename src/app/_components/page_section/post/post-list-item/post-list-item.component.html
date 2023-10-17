@@ -1,0 +1,37 @@
+<nz-card  [nzCover]="coverTemplate" [nzActions]="[actionSetting, actionEdit, actionEllipsis]">
+  <nz-card-meta
+    [nzDescription]="post.description"
+    [nzAvatar]="avatarTemplate"
+  ></nz-card-meta>
+</nz-card>
+<ng-template #avatarTemplate>
+  <nz-avatar nzSrc="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"></nz-avatar>
+</ng-template>
+<ng-template #coverTemplate>
+    <ng-container *ngIf="!post.postsImages || post.postsImages.length === 0; else containPic ">
+      <img src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png" class="ik__post-list-item-image" />
+    </ng-container>
+    <ng-template #containPic>
+      <ng-container *ngIf="post.postsImages.length === 1; else multiPic">
+        <img src="{{post.postsImages[0].imageName}}" class="ik__post-list-item-image" />
+      </ng-container>
+      <ng-template #multiPic>
+        <nz-carousel nzEffect="scrollX" nzAutoPlay >
+          <div nz-carousel-content *ngFor="let img of  post.postsImages ">
+            <img alt="example" [src]="img.imageName" class="ik__post-list-item-image"/>
+          </div>
+        </nz-carousel>
+
+      </ng-template>
+    </ng-template>
+
+</ng-template>
+<ng-template #actionSetting>
+  <span nz-icon nzType="setting"></span>
+</ng-template>
+<ng-template #actionEdit>
+  <span nz-icon nzType="edit"></span>
+</ng-template>
+<ng-template #actionEllipsis>
+  <span nz-icon nzType="ellipsis"></span>
+</ng-template>

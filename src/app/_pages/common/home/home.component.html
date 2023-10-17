@@ -1,6 +1,1 @@
-<div *ngFor="let post of posts">
-  <div class="ik__post-images--container">
-    <img *ngFor="let img of post.postsImages" [src]="img.imageName" alt="post image" />
-  </div>
-  <p>{{post.description}}</p>
-</div>
+<ik-paginated-post-list></ik-paginated-post-list>
