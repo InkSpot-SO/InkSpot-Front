@@ -8,7 +8,9 @@ import { IK_UserBase } from "../user/user-base.model";
     createdBy? : IK_UserBase
     likedByUser? : boolean;
     likesCount? : number;
+    favoritesCount? : number;
     commentsCount? : number;
+    favoritedByUser? : boolean;
   }
 
   export interface IK_PostRequestReponse extends IK_PaginatedRequest<IK_Post> {}

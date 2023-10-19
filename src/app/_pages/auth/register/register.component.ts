@@ -39,9 +39,7 @@ export class RegisterComponent {
         password: this.validateForm.value.password!,
         firstName: this.validateForm.value.firstName!,
         lastName: this.validateForm.value.lastName!
-      }).subscribe((res) => {
-        console.log(res);
-      });
+      }).subscribe();
     } else {
       Object.values(this.validateForm.controls).forEach(control => {
         if (control.invalid) {

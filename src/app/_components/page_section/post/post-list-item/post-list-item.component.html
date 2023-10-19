@@ -3,7 +3,6 @@
     <nz-card-meta
       [nzDescription]="post.description"
       [nzTitle]="post.createdBy?.pseudo!"
-      [nzAvatar]="avatarTemplate"
     ></nz-card-meta>
   </nz-card>
   <ng-template #avatarTemplate>
@@ -40,7 +39,13 @@
     <span nz-icon nzType="message"></span>
   </ng-template>
   <ng-template #actionEllipsis>
-    <span nz-icon nzType="star"></span>
+    <ng-container *ngIf="post.favoritedByUser; else favoriteTemplate">
+      <span nz-icon nzType="star" nzTheme="fill" (click)="favoritePost()"></span>
+    </ng-container>
+    <ng-template #favoriteTemplate>
+      <span nz-icon nzType="star" (click)="favoritePost()"></span>
+    </ng-template>
+    {{post.favoritesCount}}
   </ng-template>
 </ng-container>
 <ng-template #skeleton>

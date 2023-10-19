@@ -9,3 +9,12 @@ export const postLikeFailure = createAction('[Post] Like Failure', props<{ post:
 
 export const postDislikeSuccess = createAction('[Post] Dislike Success', props<{ post: IK_Post }>());
 export const postDislikeFailure = createAction('[Post] Dislike Failure', props<{ post: IK_Post }>());
+
+export const postAddFavorite = createAction('[Post] Add Favorite', props<{ post: IK_Post }>());
+export const postRemoveFavorite = createAction('[Post] Remove Favorite', props<{ post: IK_Post }>());
+
+export const postFavoriteSuccess = createAction('[Post] Favorite Success', props<{ post: IK_Post }>());
+export const postFavoriteFailure = createAction('[Post] Favorite Failure', props<{ post: IK_Post }>());
+
+
+export const postRemoveFavoriteSuccess = createAction('[Post] Remove Favorite Success', props<{ post: IK_Post }>());

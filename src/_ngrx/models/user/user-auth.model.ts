@@ -7,7 +7,7 @@ export interface IK_UserAuth extends IK_UserDeepBase {
   token : string;
   refresh_token : string;
   likedPosts : IK_Post[];
-  favoritePosts : IK_Post[];
+  favoritesPosts : IK_Post[];
   roles : IK_UserRole[];
 }
 

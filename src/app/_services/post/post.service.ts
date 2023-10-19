@@ -30,6 +30,7 @@ export class PostService {
           return {
             ...post,
             likedByUser: this.user!.likedPosts.find((likedPost) => likedPost.id === post.id) ? true : false,
+            favoritedByUser: this.user!.favoritesPosts.find((favoritePost) => favoritePost.id === post.id) ? true : false,
             postsImages: post.postsImages.map((postImage) => {
               return {
                 ...postImage,
@@ -39,7 +40,6 @@ export class PostService {
           }
         })
       }
-      console.log(res);
       return res;
     }
     ))
@@ -48,5 +48,10 @@ export class PostService {
 
   likePost(postId:number): Observable<any> {
     return this.http.post<any>(`http://localhost:8000/api/posts/${postId}/like`, {});
+  }
+
+  favorite(postId:number): Observable<any> {
+    console.log('favorite' , postId)
+    return this.http.post<any>(`http://localhost:8000/api/posts/${postId}/favorite`, {});
   }
 }

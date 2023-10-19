@@ -1,5 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import { login, logout, loginFailure, loginSuccess, userAddLike, userRemoveLike } from 'src/_ngrx/actions/auth/login.actions';
+import { login, logout, loginFailure, loginSuccess, userAddLike, userRemoveLike, userAddFavorite, userRemoveFavorite } from 'src/_ngrx/actions/auth/login.actions';
 import { IK_UserAuth } from 'src/_ngrx/models/user/user-auth.model';
 import { AuthUserState } from 'src/_ngrx/states/auth/auth-user.state';
 import { ENV } from 'src/environnement';
@@ -22,7 +22,6 @@ export const authReducer = createReducer(
     return { ...state, user: null };
   }),
   on(loginSuccess, (state, { user }) => {
-    console.log('loginSuccess', user);
     localStorage.setItem(ENV.IK.LOCAL_STORAGE.AUTH_USER, JSON.stringify(user));
     return { ...state, user, loading: false };
   }),
@@ -34,7 +33,6 @@ export const authReducer = createReducer(
       likedPosts : [...state.user!.likedPosts, post]
       }
     localStorage.setItem(ENV.IK.LOCAL_STORAGE.AUTH_USER, JSON.stringify(user));
-    console.log('userAddLike', user);
     return { ...state, user };
   }),
 
@@ -45,8 +43,27 @@ export const authReducer = createReducer(
       }
 
     localStorage.setItem(ENV.IK.LOCAL_STORAGE.AUTH_USER, JSON.stringify(user));
-    console.log('userRemoveLike', user);
     return { ...state, user };
   }
-  )
+  ),
+
+  on(userAddFavorite, (state, { post }) => {
+    const user = {
+      ...state.user!,
+      favoritesPosts : [...state.user!.favoritesPosts, post]
+      }
+      console.log('userAddFavorite store', user , post);
+    localStorage.setItem(ENV.IK.LOCAL_STORAGE.AUTH_USER, JSON.stringify(user));
+    return { ...state, user };
+  }),
+  on(userRemoveFavorite, (state, { post }) => {
+    const user = {
+      ...state.user!,
+      favoritesPosts : state.user!.favoritesPosts.filter((favoritePost) => favoritePost.id !== post.id)
+      }
+      console.log('userRemoveFavorite store', user , post);
+
+    localStorage.setItem(ENV.IK.LOCAL_STORAGE.AUTH_USER, JSON.stringify(user));
+    return { ...state, user };
+  })
 )

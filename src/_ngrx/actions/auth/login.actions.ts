@@ -11,3 +11,7 @@ export const loginRefreshToken = createAction('[Auth] Login Refresh Token', prop
 
 export const userRemoveLike = createAction('[User] Remove Like', props<{ postId: number }>());
 export const userAddLike = createAction('[User] Add Like', props<{ post : IK_Post }>());
+
+export const userAddFavorite = createAction('[User] Add Favorite', props<{ post: IK_Post }>());
+export const userRemoveFavorite = createAction('[User] Remove Favorite', props<{ post: IK_Post }>());
+

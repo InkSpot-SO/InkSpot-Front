@@ -32,9 +32,7 @@ export class AuthentificationInterceptorInterceptor implements HttpInterceptor {
 
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<any> {
-    console.log('intercept' , req.url)
     if ( req.url.includes('login_check') || req.url.includes('register') || req.url.includes('token_refresh') ) {
-      console.log('intercept', 'noheader add');
       return next.handle(req);
     }
     req = req.clone({
@@ -59,7 +57,6 @@ export class AuthentificationInterceptorInterceptor implements HttpInterceptor {
   }
 
   private handle401Error(request: HttpRequest<any>, next: HttpHandler) {
-    console.log('handle401Error');
     if (!this.isRefreshing) {
       this.isRefreshing = true;
 

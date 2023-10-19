@@ -4,8 +4,8 @@ import { Store } from "@ngrx/store";
 import { NzMessageService } from "ng-zorro-antd/message";
 import { switchMap, map, catchError, of } from "rxjs";
 import { AppState } from "src/_ngrx/actions/app.state";
-import { userAddLike, userRemoveLike } from "src/_ngrx/actions/auth/login.actions";
-import { postDislike, postDislikeFailure, postDislikeSuccess, postLike, postLikeFailure, postLikeSuccess } from "src/_ngrx/actions/post/post.action";
+import { userAddFavorite, userAddLike, userRemoveFavorite, userRemoveLike } from "src/_ngrx/actions/auth/login.actions";
+import { postAddFavorite, postDislike, postDislikeFailure, postDislikeSuccess, postFavoriteFailure, postFavoriteSuccess, postLike, postLikeFailure, postLikeSuccess, postRemoveFavorite, postRemoveFavoriteSuccess } from "src/_ngrx/actions/post/post.action";
 import { PostService } from "src/app/_services/post/post.service";
 
 
@@ -16,8 +16,7 @@ export class PostEffects {
       ofType(postLike),
       switchMap(action => {
         return this._postService.likePost(action.post.id).pipe(
-          map(( msss) => {
-            console.log(msss);
+          map(() => {
             return postLikeSuccess({ post : action.post });
           }),
           catchError(error => of(postLikeFailure({ post : action.post })))
@@ -33,7 +32,6 @@ export class PostEffects {
         // like / dislike handled by the same route
         return this._postService.likePost(action.post.id).pipe(
           map((r) => {
-            console.log(r);
             return postDislikeSuccess({ post : action.post });
           }),
           catchError(error => of(postDislikeFailure({ post : action.post })))
@@ -99,6 +97,71 @@ export class PostEffects {
     ),
     { dispatch: false }
   )
+
+
+  $postAddFavorite = createEffect(
+    () => this.actions$.pipe(
+      ofType(postAddFavorite),
+      switchMap(action => {
+        return this._postService.favorite(action.post.id).pipe(
+          map(() => {
+            this.store.dispatch(postFavoriteSuccess({ post : action.post }));
+          }),
+          catchError(error => of(postFavoriteFailure({ post : action.post })))
+        );
+      })
+    ),
+    { dispatch: false }
+  )
+  $postRemoveFavorite = createEffect(
+    () => this.actions$.pipe(
+      ofType(postRemoveFavorite),
+      switchMap(action => {
+        // add favorite / remove handled by the same route
+        return this._postService.favorite(action.post.id).pipe(
+          map(() => {
+            this.store.dispatch(postRemoveFavoriteSuccess({ post : action.post }));
+          }),
+          catchError(error => of(postFavoriteFailure({ post : action.post })))
+        );
+      })
+    ),
+    { dispatch: false }
+  )
+
+  $postAddFavoriteSuccess = createEffect(
+    () => this.actions$.pipe(
+      ofType(postFavoriteSuccess),
+      map(action => {
+        console.log('postAddFavoriteSuccess', action.post)
+        this.store.dispatch(userAddFavorite({ post : action.post }));
+        return action;
+      })
+    ),
+    { dispatch: false }
+  )
+  $postRemoveFavoriteSuccess = createEffect(
+    () => this.actions$.pipe(
+      ofType(postRemoveFavoriteSuccess),
+      map(action => {
+        console.log('postRemoveFavoriteSuccess', action.post)
+        this.store.dispatch(userRemoveFavorite({ post : action.post }));
+        return action;
+      })
+    ),
+    { dispatch: false }
+  )
+  $postFavoriteFailure = createEffect(
+    () => this.actions$.pipe(
+      ofType(postFavoriteFailure),
+      map(action => {
+        this.message.error('Favorite failed');
+        return action;
+      })
+    ),
+    { dispatch: false }
+  )
+
 
   constructor(
     private store : Store<AppState>,

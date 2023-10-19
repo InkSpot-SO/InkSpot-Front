@@ -17,9 +17,5 @@ export class CommonComponent {
     this.userName$.subscribe(username => {
       console.log(username);
     });
-    this.store.select(state=> state.authUser).subscribe(state => {
-      console.log(state);
-    }
-    );
   }
 }
