@@ -1,28 +1,29 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { DefaultDataService, HttpUrlGenerator } from '@ngrx/data';
+import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
-import { AppState } from 'src/_ngrx/actions/app.state';
-import { IK_PostRequestReponse } from 'src/_ngrx/models/post/post.model';
-import { IK_UserAuth } from 'src/_ngrx/models/user/user-auth.model';
+import { IK_Post, IK_PostRequestReponse } from '../models/post/post.model';
+import { HttpOptions } from '@ngrx/data/src/dataservices/interfaces';
+import { AppState } from '../actions/app.state';
+import { Store } from '@ngrx/store';
+import { IK_UserAuth } from '../models/user/user-auth.model';
 import { ENV } from 'src/environnement';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class PostService {
+@Injectable()
+export class PostDataService extends DefaultDataService<IK_Post> {
+  user$ = this._store.select(state => state.authUser.user);
   user : IK_UserAuth|null = null;
-  user$ = this.store.select(state => state.authUser.user);
-  constructor(
-    private store : Store<AppState>,
-    private http : HttpClient
-  ) {
+  constructor(http: HttpClient, httpUrlGenerator: HttpUrlGenerator,private _store : Store<AppState>) {
+    super('IK_Post', http, httpUrlGenerator);
     this.user$.subscribe(user => {
       this.user = user;
-    });
-   }
+    }
+    );
+  }
 
-  getWithQueryPaginated(page:number,searchTerm:string): Observable<IK_PostRequestReponse> {
+  getWithQueryPaginated(params: string | HttpOptions): Observable<IK_PostRequestReponse> {
+    const page = (params as any).page || 1;
+    const searchTerm = (params as any).searchTerm || '';
     return this.http.get<IK_PostRequestReponse>(`http://localhost:8000/api/posts/all?page=${page}&searchTerm=${searchTerm}`).pipe(map((r) => {
       const res = {
         ...r,
@@ -44,9 +45,5 @@ export class PostService {
     }
     ))
       ;
-  }
-
-  likePost(postId:number): Observable<any> {
-    return this.http.post<any>(`http://localhost:8000/api/posts/${postId}/like`, {});
   }
 }

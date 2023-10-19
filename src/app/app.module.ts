@@ -24,6 +24,9 @@ import { NgZorroAntdModule } from './ng-zorro.module';
 import { ChatComponent } from './_pages/common/chat/chat.component';
 import { PaginatedPostListComponent } from './_components/page_section/post/paginated-post-list/paginated-post-list.component';
 import { PostListItemComponent } from './_components/page_section/post/post-list-item/post-list-item.component';
+import { DefaultDataServiceConfig, EntityDataModule } from '@ngrx/data';
+import { defaultDataServiceConfig, entityConfig } from 'src/_ngrx/entity/global.entity';
+import { PostEffects } from 'src/_ngrx/effects/post/post.effect';
 registerLocaleData(fr);
 
 @NgModule({
@@ -43,11 +46,13 @@ registerLocaleData(fr);
     BrowserModule,
     AppRoutingModule,
     StoreModule.forRoot({
-      authUser : authReducer
+      authUser : authReducer,
     }, {}),
     EffectsModule.forRoot([
-      AuthEffects
+      AuthEffects,
+      PostEffects
     ]),
+    EntityDataModule.forRoot(entityConfig),
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
@@ -59,6 +64,10 @@ registerLocaleData(fr);
       provide : HTTP_INTERCEPTORS,
       useClass : AuthentificationInterceptorInterceptor,
       multi : true
+    },
+    {
+      provide : DefaultDataServiceConfig,
+      useValue : defaultDataServiceConfig
     }
   ],
   bootstrap: [AppComponent]

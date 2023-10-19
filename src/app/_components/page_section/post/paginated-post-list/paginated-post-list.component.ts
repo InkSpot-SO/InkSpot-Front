@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
-import { IK_Post } from 'src/_ngrx/models/post/post.model';
+import { Component, ElementRef, ViewChild } from '@angular/core';
+import { EntityCollectionService, EntityServices } from '@ngrx/data';
+import { IK_Post, IK_PostRequestReponse } from 'src/_ngrx/models/post/post.model';
 import { PostService } from 'src/app/_services/post/post.service';
 
 @Component({
@@ -7,10 +8,12 @@ import { PostService } from 'src/app/_services/post/post.service';
   templateUrl: './paginated-post-list.component.html',
   styleUrls: ['./paginated-post-list.component.scss']
 })
-export class PaginatedPostListComponent {
+export class PaginatedPostListComponent{
+  @ViewChild('#list') listRef? : ElementRef;
   posts : IK_Post[] = [];
   maxPage : number = 1;
-  private _page : number = 2;
+  loading : boolean = false;
+  private _page : number = 1;
   get page() {
     return this._page;
   }
@@ -18,19 +21,48 @@ export class PaginatedPostListComponent {
     this._page = page;
     this.onUpdateRequest();
   }
-  postsRequest = this._postService.getPosts(this.page);
-  request$ = this.postsRequest.subscribe(Rpost => {
-    this.posts =  Rpost.datas;
-    this.maxPage = Rpost.pagination.totalPages;
+  private _search : string = '';
+  get search() {
+    return this._search;
+  }
+  set search(search : string) {
+    this._search = search;
+    this.posts = [];
+    this.page = 1;
 
+    this.onUpdateRequest();
+  }
+  postsRequest = this._postService.getWithQueryPaginated(this.page , this.search);
+  request$ = this.postsRequest.subscribe(Rpost => {
+    this.postResponseHandle(Rpost);
   });
 
-  constructor(private _postService : PostService) {}
+
   onUpdateRequest() {
+    this.loading = true;
     if ( this.request$ ) {
       this.request$.unsubscribe();
     }
-    this.postsRequest = this._postService.getPosts(this.page);
+    this.postsRequest = this._postService.getWithQueryPaginated(this.page , this.search);
+    this.request$ = this.postsRequest.subscribe(Rpost => {
+      this.postResponseHandle(Rpost);
+    });
   }
+
+  postResponseHandle( Rpost : IK_PostRequestReponse ) {
+    this.maxPage = Rpost.pagination.totalPages;
+    this.posts = this.posts.concat(Rpost.datas);
+    this.loading = false;
+  }
+  showLoadMore() {
+    return !this.loading && this.page != this.maxPage && this.maxPage > 1;
+  }
+  loadMore() {
+    if (this.page < this.maxPage) {
+      this.page++;
+    }
+  }
+  constructor(private _postService : PostService) { }
+
 
 }

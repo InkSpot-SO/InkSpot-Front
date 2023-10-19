@@ -1,37 +1,63 @@
-<nz-card  [nzCover]="coverTemplate" [nzActions]="[actionSetting, actionEdit, actionEllipsis]">
-  <nz-card-meta
-    [nzDescription]="post.description"
-    [nzAvatar]="avatarTemplate"
-  ></nz-card-meta>
-</nz-card>
-<ng-template #avatarTemplate>
-  <nz-avatar nzSrc="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"></nz-avatar>
-</ng-template>
-<ng-template #coverTemplate>
-    <ng-container *ngIf="!post.postsImages || post.postsImages.length === 0; else containPic ">
-      <img src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png" class="ik__post-list-item-image" />
-    </ng-container>
-    <ng-template #containPic>
-      <ng-container *ngIf="post.postsImages.length === 1; else multiPic">
-        <img src="{{post.postsImages[0].imageName}}" class="ik__post-list-item-image" />
+<ng-container *ngIf="post;else skeleton">
+  <nz-card   [nzCover]="coverTemplate" [nzActions]="[actionSetting, actionEdit, actionEllipsis]">
+    <nz-card-meta
+      [nzDescription]="post.description"
+      [nzTitle]="post.createdBy?.pseudo!"
+      [nzAvatar]="avatarTemplate"
+    ></nz-card-meta>
+  </nz-card>
+  <ng-template #avatarTemplate>
+    <nz-avatar nzSrc="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"></nz-avatar>
+  </ng-template>
+  <ng-template #coverTemplate>
+      <ng-container *ngIf="!post.postsImages || post.postsImages.length === 0; else containPic ">
       </ng-container>
-      <ng-template #multiPic>
-        <nz-carousel nzEffect="scrollX" nzAutoPlay >
-          <div nz-carousel-content *ngFor="let img of  post.postsImages ">
-            <img alt="example" [src]="img.imageName" class="ik__post-list-item-image"/>
-          </div>
-        </nz-carousel>
+      <ng-template #containPic>
+        <ng-container *ngIf="post.postsImages.length === 1; else multiPic">
+          <img src="{{post.postsImages[0].imageName}}" class="ik__post-list-item-image" />
+        </ng-container>
+        <ng-template #multiPic>
+          <nz-carousel nzEffect="scrollX" nzAutoPlay >
+            <div nz-carousel-content *ngFor="let img of  post.postsImages ">
+              <img alt="example" [src]="img.imageName" class="ik__post-list-item-image"/>
+            </div>
+          </nz-carousel>
 
+        </ng-template>
       </ng-template>
+
+  </ng-template>
+  <ng-template #actionSetting>
+    <ng-container *ngIf="post.likedByUser; else likeTemplate">
+      <span nz-icon nzType="heart" nzTheme="fill" (click)="likePost()"></span>
+      </ng-container>
+    <ng-template #likeTemplate>
+      <span nz-icon nzType="heart" (click)="likePost()"></span>
     </ng-template>
+     {{post.likesCount}}
+  </ng-template>
+  <ng-template #actionEdit>
+    <span nz-icon nzType="message"></span>
+  </ng-template>
+  <ng-template #actionEllipsis>
+    <span nz-icon nzType="star"></span>
+  </ng-template>
+</ng-container>
+<ng-template #skeleton>
+  <nz-card [nzCover]="coverTemplate">
+    <nz-card-meta
+    [nzDescription]="descriptonTemplate"
+  ></nz-card-meta>
+  <ng-template #coverTemplate>
+    <div class="ik__post-list-item-image" >
+      <nz-skeleton-element nzType="image" ></nz-skeleton-element>
+    </div>
+  </ng-template>
+  </nz-card>
+  <ng-template #descriptonTemplate>
+    <!-- generate no img skeleton element from ng zorro -->
+    <nz-skeleton [nzActive]="true" [nzAvatar]="true" [nzParagraph]="{ rows: 2 }"></nz-skeleton>
+  </ng-template>
 
 </ng-template>
-<ng-template #actionSetting>
-  <span nz-icon nzType="setting"></span>
-</ng-template>
-<ng-template #actionEdit>
-  <span nz-icon nzType="edit"></span>
-</ng-template>
-<ng-template #actionEllipsis>
-  <span nz-icon nzType="ellipsis"></span>
-</ng-template>
+

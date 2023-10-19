@@ -1,8 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Observable, catchError, concat, concatMap, map } from 'rxjs';
+import { AppState } from 'src/_ngrx/actions/app.state';
 import { IK_UserAuth, IK_UserAuthRegisterRequest, IK_UserAuthRequest, IK_UserAuthResponse } from 'src/_ngrx/models/user/user-auth.model';
 import { ENV } from 'src/environnement';
 
@@ -10,11 +12,16 @@ import { ENV } from 'src/environnement';
   providedIn: 'root'
 })
 export class AuthentificationService {
-
+  user : IK_UserAuth | null = null;
   constructor(
     private http: HttpClient,
     private NG_message : NzMessageService,
-  ) { }
+    private store : Store<AppState>,
+  ) {
+    this.store.select(s => s.authUser.user).subscribe(user => {
+      this.user = user;
+    });
+   }
 
   register(user: IK_UserAuthRegisterRequest) : Observable<IK_UserAuth> {
     const { messageId } = this.NG_message.loading('Registration...', { nzDuration: 0 });
@@ -53,7 +60,7 @@ export class AuthentificationService {
 
   refreshToken() : Observable<IK_UserAuth> {
     return this.http.post<IK_UserAuthResponse>('http://localhost:8000/api/token_refresh', {
-      refresh_token : "6991b498b50a5e8545672bf761476a6bc8817357fe68256920c56b353c1bbbaaed128b52bfc5947cc6c2cdfbe6465197ccc9d9745299ebd03520d538a3f83b11"
+      refresh_token : this.user?.refresh_token
     }).pipe(
       map((user) => {
         return this.formatResponseUser(user);

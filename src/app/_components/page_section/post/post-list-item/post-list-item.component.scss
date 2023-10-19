@@ -3,5 +3,12 @@
   w-full
   h-[300px]
   object-cover
-  m-auto
+  m-auto;
+  nz-skeleton-element {
+    @apply
+    w-full
+    h-full
+    m-auto;
+  }
+
 }

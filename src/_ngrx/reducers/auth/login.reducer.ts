@@ -1,5 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import { login, logout, loginFailure, loginSuccess } from 'src/_ngrx/actions/auth/login.actions';
+import { login, logout, loginFailure, loginSuccess, userAddLike, userRemoveLike } from 'src/_ngrx/actions/auth/login.actions';
 import { IK_UserAuth } from 'src/_ngrx/models/user/user-auth.model';
 import { AuthUserState } from 'src/_ngrx/states/auth/auth-user.state';
 import { ENV } from 'src/environnement';
@@ -26,5 +26,27 @@ export const authReducer = createReducer(
     localStorage.setItem(ENV.IK.LOCAL_STORAGE.AUTH_USER, JSON.stringify(user));
     return { ...state, user, loading: false };
   }),
-  on(loginFailure, (state, { error }) => ({ ...state, error, loading: false }))
-);
+  on(loginFailure, (state, { error }) => ({ ...state, error, loading: false })),
+
+  on(userAddLike, (state, { post }) => {
+    const user = {
+      ...state.user!,
+      likedPosts : [...state.user!.likedPosts, post]
+      }
+    localStorage.setItem(ENV.IK.LOCAL_STORAGE.AUTH_USER, JSON.stringify(user));
+    console.log('userAddLike', user);
+    return { ...state, user };
+  }),
+
+  on(userRemoveLike, (state, { postId }) => {
+    const user = {
+      ...state.user!,
+      likedPosts : state.user!.likedPosts.filter((post) => post.id !== postId)
+      }
+
+    localStorage.setItem(ENV.IK.LOCAL_STORAGE.AUTH_USER, JSON.stringify(user));
+    console.log('userRemoveLike', user);
+    return { ...state, user };
+  }
+  )
+)
