@@ -26,7 +26,7 @@
       <a class="auth-form-forgot" nz-link>Forgot password</a>
     </div>
   </div>
-  <button nz-button class="auth-form-button auth-form-margin" [nzType]="'primary'" >Log in</button>
+  <button nz-button class="auth-form-button auth-form-margin" [disabled]="loginLoading" [nzType]="'primary'" >Log in</button>
   Or
   <a [routerLink]="'/auth/register'">register now!</a>
 </form>

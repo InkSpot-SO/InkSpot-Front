@@ -13,9 +13,20 @@ nz-list {
 
 .ik__ppl--container {
   @apply
+  relative
   w-full
   h-full
   flex
   flex-col
   gap-4
+}
+
+
+.ik__ppl-create--btn {
+  @apply
+  z-50
+  absolute
+  bottom-0
+  right-0
+
 }

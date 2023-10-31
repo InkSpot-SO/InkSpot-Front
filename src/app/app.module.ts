@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, isDevMode } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -27,6 +27,11 @@ import { PostListItemComponent } from './_components/page_section/post/post-list
 import { DefaultDataServiceConfig, EntityDataModule } from '@ngrx/data';
 import { defaultDataServiceConfig, entityConfig } from 'src/_ngrx/entity/global.entity';
 import { PostEffects } from 'src/_ngrx/effects/post/post.effect';
+import { PostSingleComponent } from './_pages/common/post/post-single/post-single.component';
+import { CommentListComponent } from './_components/page_section/comment-list/comment-list.component';
+import { CommentListItemComponent } from './_components/page_section/comment_list/comment-list-item/comment-list-item.component';
+import { PostCreateComponent } from './_pages/common/post/post-create/post-create.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
 registerLocaleData(fr);
 
 @NgModule({
@@ -39,7 +44,11 @@ registerLocaleData(fr);
     HomeComponent,
     ChatComponent,
     PaginatedPostListComponent,
-    PostListItemComponent
+    PostListItemComponent,
+    PostSingleComponent,
+    CommentListComponent,
+    CommentListItemComponent,
+    PostCreateComponent
   ],
   imports: [
     ReactiveFormsModule,
@@ -56,7 +65,13 @@ registerLocaleData(fr);
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    NgZorroAntdModule
+    NgZorroAntdModule,
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: !isDevMode(),
+      // Register the ServiceWorker as soon as the application is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000'
+    })
   ],
   providers: [
     { provide: NZ_I18N, useValue: fr_FR },

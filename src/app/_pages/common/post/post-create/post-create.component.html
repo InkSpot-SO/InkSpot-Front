@@ -1,0 +1,20 @@
+<div class="clearfix">
+  <nz-upload
+    nzMultiple
+    nzListType="picture-card"
+    [(nzFileList)]="fileList"
+    [nzShowButton]="fileList.length < 8"
+  >
+    <div>
+      <span nz-icon nzType="plus"></span>
+      <div style="margin-top: 8px">Upload</div>
+    </div>
+  </nz-upload>
+
+</div>
+
+
+<input type="text" nz-input placeholder="Post content" [(ngModel)]="description" />
+
+<button nz-button (click)="sendFormData()">Send</button>
+

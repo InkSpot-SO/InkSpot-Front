@@ -2,11 +2,14 @@
   <nz-input-group nzSuffixIcon="search">
     <input type="text" nz-input placeholder="Search" [(ngModel)]="search" />
   </nz-input-group>
+  <button class="ik__ppl-create--btn" nzShape="circle" nz-button nzType="primary" [routerLink]="['/post/create']">
+    <span nz-icon nzType="plus"></span>
+  </button>
   <nz-list nzGrid >
     <div nz-row [nzGutter]="16">
       <div nz-col [nzXXl]="3" [nzXl]="8" [nzLg]="6" [nzMd]="6" [nzSm]="12" [nzXs]="24" *ngFor="let post of posts">
         <nz-list-item>
-          <ik-post-list-item [post]="post"></ik-post-list-item>
+          <ik-post-list-item (onDeletePost)="onDelete($event)" [post]="post"></ik-post-list-item>
         </nz-list-item>
       </div>
       <ng-container *ngIf="loading">

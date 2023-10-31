@@ -1,11 +1,13 @@
 import {Injectable } from "@angular/core";
+import { Router } from "@angular/router";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { Store } from "@ngrx/store";
 import { NzMessageService } from "ng-zorro-antd/message";
 import { switchMap, map, catchError, of } from "rxjs";
 import { AppState } from "src/_ngrx/actions/app.state";
-import { userAddFavorite, userAddLike, userRemoveFavorite, userRemoveLike } from "src/_ngrx/actions/auth/login.actions";
-import { postAddFavorite, postDislike, postDislikeFailure, postDislikeSuccess, postFavoriteFailure, postFavoriteSuccess, postLike, postLikeFailure, postLikeSuccess, postRemoveFavorite, postRemoveFavoriteSuccess } from "src/_ngrx/actions/post/post.action";
+import { userAddComment, userAddFavorite, userAddLike, userAddPost, userAddSubComment, userRemoveFavorite, userRemoveLike, userRemovePost } from "src/_ngrx/actions/auth/login.actions";
+import { postAddComment, postAddCommentFailure, postAddCommentSuccess, postAddFavorite, postAddSubComment, postAddSubCommentSuccess, postCreate, postCreateFailure, postCreateSuccess, postDelete, postDeleteFailure, postDeleteSuccess, postDislike, postDislikeFailure, postDislikeSuccess, postFavoriteFailure, postFavoriteSuccess, postLike, postLikeFailure, postLikeSuccess, postRemoveFavorite, postRemoveFavoriteSuccess } from "src/_ngrx/actions/post/post.action";
+import { CommentService } from "src/app/_services/comment/comment.service";
 import { PostService } from "src/app/_services/post/post.service";
 
 
@@ -50,6 +52,22 @@ export class PostEffects {
       ),
     { dispatch: false }
   );
+  $postDelete = createEffect(
+    () => this.actions$.pipe(
+      ofType(postDelete),
+      switchMap(action => {
+        return this._postService.delete(action.post.id).pipe(
+          map(() => {
+            this.store.dispatch(userRemovePost({ post : action.post }));
+            this.message.success('Post deleted');
+            return action;
+          }),
+          catchError(error => of(userRemovePost({ post : action.post })))
+        );
+      })
+    )
+  );
+
 
 
   $postLikeFailure = createEffect(
@@ -161,12 +179,110 @@ export class PostEffects {
     ),
     { dispatch: false }
   )
+  $postAddComment = createEffect(
+    () => this.actions$.pipe(
+      ofType(postAddComment),
+      switchMap(action => {
+        return this._commentService.addComment(action.post.id, action.comment).pipe(
+          map((comment) => {
+            return postAddCommentSuccess({ post : action.post , comment : comment.comment });
+          }),
+          catchError(error => of(postAddCommentFailure()))
+        );
+      })
+    ),
+    { dispatch: false }
+  )
+  $postAddCommentSuccess = createEffect(
+    () => this.actions$.pipe(
+      ofType(postAddCommentSuccess),
+      map(action => {
+        this.store.dispatch(userAddComment({ postId : action.post.id, comment : action.comment }));
+        return action;
+      })
+    ),
+    { dispatch: false }
+  )
 
+  $postAddCommentFailure = createEffect(
+    () => this.actions$.pipe(
+      ofType(postAddCommentFailure),
+      map(action => {
+        this.message.error('Comment failed');
+        return action;
+      })
+    ),
+    { dispatch: false }
+  )
+
+  $postAddSubComment = createEffect(
+    () => this.actions$.pipe(
+      ofType(postAddSubComment),
+      switchMap(action => {
+        return this._commentService.addComment(action.post.id, action.subComment).pipe(
+          map((comment) => {
+            return postAddSubCommentSuccess({ post : action.post , parentComments : action.parentComments, subComment : comment.comment });
+          }),
+          catchError(error => of(postAddCommentFailure()))
+        );
+      })
+    ),
+    { dispatch: false }
+  )
+  $postAddSubCommentSuccess = createEffect(
+    () => this.actions$.pipe(
+      ofType(postAddSubCommentSuccess),
+      map(action => {
+        this.store.dispatch(userAddSubComment({ postId : action.post.id, parentComments : action.parentComments, subComment : action.subComment }));
+        return action;
+      })
+    ),
+    { dispatch: false }
+  )
+
+  $postCreate = createEffect(
+    () => this.actions$.pipe(
+      ofType(postCreate),
+      switchMap(action => {
+        return this._postService.create(action.post).pipe(
+          map((post) => {
+            return postCreateSuccess({ post });
+          }),
+          catchError(error => of(postCreateFailure()))
+        );
+      })
+    )
+  )
+
+  $postCreateSuccess = createEffect(
+    () => this.actions$.pipe(
+      ofType(postCreateSuccess),
+      map(action => {
+        this.message.success('Post created');
+        this.store.dispatch(userAddPost({ post : action.post }));
+        this.router.navigate(['/']);
+        return action;
+      })
+    ),
+    { dispatch: false }
+  )
+  $postCreateFailure = createEffect(
+    () => this.actions$.pipe(
+      ofType(postCreateFailure),
+      map(action => {
+        this.message.error('Post creation failed');
+        return action;
+      })
+    ),
+    { dispatch: false }
+  )
 
   constructor(
     private store : Store<AppState>,
     private _postService : PostService,
+    private _commentService : CommentService,
     private actions$: Actions,
+    private router : Router,
     private message: NzMessageService,
   ) {}
 }

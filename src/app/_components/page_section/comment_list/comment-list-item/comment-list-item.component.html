@@ -1,0 +1,24 @@
+<nz-card *ngIf="comment" [nzTitle]="comment.createdBy.pseudo"[nzActions]="[answer,conditionnal]">
+  <nz-card-meta
+  [nzDescription]="comment.text">
+  </nz-card-meta>
+  <ng-template #answer>
+    <span nz-icon nzType="subnode" (click)="answerComment(comment)"></span>
+  </ng-template>
+  <ng-template #conditionnal>
+    <!-- if is user comment delete button else report -->
+    <ng-container *ngIf="isUserOwner; else report">
+      <span nz-icon nzType="delete" (click)="deleteComment()"></span>
+    </ng-container>
+    <ng-template #report>
+      <span nz-icon nzType="alert" (click)="reportComment()"></span>
+    </ng-template>
+  </ng-template>
+
+</nz-card>
+
+<div class="ik__cli-sub--container">
+  <ik-comment-list-item [parentComment]="pComment" [usersComment]="usersComment"  *ngFor="let comment of comment?.subComments" (onAnswerToComment)="answerComment($event)" [comment]="comment"></ik-comment-list-item>
+</div>
+
+

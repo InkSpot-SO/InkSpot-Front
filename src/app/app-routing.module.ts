@@ -8,6 +8,8 @@ import { HomeComponent } from './_pages/common/home/home.component';
 import { unauthGuard } from './_guards/auth/unauth.guard';
 import { authGuard } from './_guards/auth/auth.guard';
 import { ChatComponent } from './_pages/common/chat/chat.component';
+import { PostSingleComponent } from './_pages/common/post/post-single/post-single.component';
+import { PostCreateComponent } from './_pages/common/post/post-create/post-create.component';
 const routes: Routes = [
   {
     path: 'auth',
@@ -41,6 +43,19 @@ const routes: Routes = [
       {
         path : 'chat',
         component : ChatComponent
+      },
+      {
+        path : 'post',
+        children : [
+          {
+            path : 'create',
+            component : PostCreateComponent
+          },
+          {
+            path : ':id',
+            component : PostSingleComponent
+          }
+        ]
       }
     ]
   },

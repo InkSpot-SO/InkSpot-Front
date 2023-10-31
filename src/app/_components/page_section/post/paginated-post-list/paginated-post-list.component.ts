@@ -1,5 +1,8 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { EntityCollectionService, EntityServices } from '@ngrx/data';
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/_ngrx/actions/app.state';
+import { postDelete } from 'src/_ngrx/actions/post/post.action';
 import { IK_Post, IK_PostRequestReponse } from 'src/_ngrx/models/post/post.model';
 import { PostService } from 'src/app/_services/post/post.service';
 
@@ -62,7 +65,14 @@ export class PaginatedPostListComponent{
       this.page++;
     }
   }
-  constructor(private _postService : PostService) { }
+  onDelete(post : IK_Post) {
+    this.posts = this.posts.filter(p => p.id != post.id);
+
+    this.store.dispatch(postDelete({post:post}));
+  }
+  constructor(private _postService : PostService, private store : Store<AppState>) {
+    this.loading = true;
+  }
 
 
 }

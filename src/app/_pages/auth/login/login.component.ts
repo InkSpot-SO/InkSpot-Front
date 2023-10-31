@@ -10,6 +10,7 @@ import { AuthentificationService } from 'src/app/_services/authentification-serv
   styleUrls: ['./login.component.scss' , '../auth.component.scss']
 })
 export class LoginComponent {
+  loginLoading = false;
   validateForm: FormGroup<{
     username: FormControl<string>;
     password: FormControl<string>;
@@ -24,10 +25,14 @@ export class LoginComponent {
     if (
       this.validateForm.valid
       ) {
+        this.loginLoading = true;
       this.store.dispatch(login({user : {
         username: this.validateForm.value.username!,
         password: this.validateForm.value.password!,
       }}));
+      setTimeout(() => {
+        this.loginLoading = false;
+      }, 2000);
     } else {
       Object.values(this.validateForm.controls).forEach(control => {
         if (control.invalid) {
@@ -39,7 +44,8 @@ export class LoginComponent {
   }
 
   constructor(private fb: NonNullableFormBuilder,
-    private _authService : AuthentificationService,
     private store : Store
-  ) {}
+  ) {
+
+  }
 }

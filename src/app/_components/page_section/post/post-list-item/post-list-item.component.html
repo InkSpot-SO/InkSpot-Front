@@ -1,8 +1,8 @@
 <ng-container *ngIf="post;else skeleton">
-  <nz-card   [nzCover]="coverTemplate" [nzActions]="[actionSetting, actionEdit, actionEllipsis]">
+  <nz-card   [nzCover]="coverTemplate" [nzActions]=" post.isUserOwner ? [actionSetting, actionEdit, actionEllipsis , userDeletePost] : [actionSetting, actionEdit, actionEllipsis]" >
     <nz-card-meta
       [nzDescription]="post.description"
-      [nzTitle]="post.createdBy?.pseudo!"
+      [nzTitle]="titleTemplate"
     ></nz-card-meta>
   </nz-card>
   <ng-template #avatarTemplate>
@@ -26,6 +26,9 @@
       </ng-template>
 
   </ng-template>
+  <ng-template #titleTemplate>
+    <h3 [routerLink]="'/post/'+post.id" class="ik__pli--link">{{post.createdBy?.pseudo}}</h3>
+  </ng-template>
   <ng-template #actionSetting>
     <ng-container *ngIf="post.likedByUser; else likeTemplate">
       <span nz-icon nzType="heart" nzTheme="fill" (click)="likePost()"></span>
@@ -36,7 +39,7 @@
      {{post.likesCount}}
   </ng-template>
   <ng-template #actionEdit>
-    <span nz-icon nzType="message"></span>
+    <span nz-icon nzType="message"  [routerLink]="'/post/'+post.id+'?action=comment'"></span>
   </ng-template>
   <ng-template #actionEllipsis>
     <ng-container *ngIf="post.favoritedByUser; else favoriteTemplate">
@@ -46,6 +49,11 @@
       <span nz-icon nzType="star" (click)="favoritePost()"></span>
     </ng-template>
     {{post.favoritesCount}}
+  </ng-template>
+
+  <ng-template #userDeletePost>
+    <span nz-icon nzType="delete" (click)="deletePost(post)"></span>
+    Delete
   </ng-template>
 </ng-container>
 <ng-template #skeleton>

@@ -1,0 +1,41 @@
+
+<div class="ik__ps--container" *ngIf="post;else loader">
+
+  <div class="ik__ps-left--container">
+    <div class="ik__ps-image--container">
+      <ng-container *ngIf="!post.postsImages || post.postsImages.length === 0; else containPic ">
+      </ng-container>
+      <ng-template #containPic>
+        <ng-container *ngIf="post.postsImages.length === 1; else multiPic">
+          <img src="{{post.postsImages[0].imageName}}" class="ik__post-single-image" />
+        </ng-container>
+        <ng-template #multiPic>
+          <nz-carousel nzEffect="scrollX" nzAutoPlay >
+            <div nz-carousel-content *ngFor="let img of  post.postsImages ">
+              <img alt="example" [src]="img.imageName" class="ik__post-single-image"/>
+            </div>
+          </nz-carousel>
+
+        </ng-template>
+        </ng-template>
+    </div>
+
+    </div>
+  <div class="ik__ps-right--container">
+    <div class="ik__ps-description--container">
+      <div class="ik__ps-description--text">
+        {{post.description}}
+      </div>
+    </div>
+    <ik-comment-list [(post)]="post" #commentList>
+      <ng-container *ngFor="let comment of post.comments">
+        <ik-comment-list-item [usersComment]="usersComment" (onAnswerToComment)="answerToComment($event)" [comment]="comment"></ik-comment-list-item>
+      </ng-container>
+    </ik-comment-list>
+  </div>
+</div>
+<ng-template #loader>
+  <div class="ik__ps-loader" >
+    <nz-spin nzSimple></nz-spin>
+  </div>
+</ng-template>

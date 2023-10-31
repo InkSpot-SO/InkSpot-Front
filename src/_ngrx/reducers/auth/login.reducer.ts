@@ -1,5 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
-import { login, logout, loginFailure, loginSuccess, userAddLike, userRemoveLike, userAddFavorite, userRemoveFavorite } from 'src/_ngrx/actions/auth/login.actions';
+import { login, logout, loginFailure, loginSuccess, userAddLike, userRemoveLike, userAddFavorite, userRemoveFavorite, userAddPost, userRemovePost, userAddComment, userAddSubComment } from 'src/_ngrx/actions/auth/login.actions';
+import { IK_Comment } from 'src/_ngrx/models/post/post.model';
 import { IK_UserAuth } from 'src/_ngrx/models/user/user-auth.model';
 import { AuthUserState } from 'src/_ngrx/states/auth/auth-user.state';
 import { ENV } from 'src/environnement';
@@ -61,9 +62,55 @@ export const authReducer = createReducer(
       ...state.user!,
       favoritesPosts : state.user!.favoritesPosts.filter((favoritePost) => favoritePost.id !== post.id)
       }
-      console.log('userRemoveFavorite store', user , post);
+    localStorage.setItem(ENV.IK.LOCAL_STORAGE.AUTH_USER, JSON.stringify(user));
+    return { ...state, user };
+  }),
+  on(userAddPost, (state, { post }) => {
+    const user : IK_UserAuth = {
+      ...state.user!,
+      createdPosts : [...state.user!.createdPosts, post]
+      }
+    localStorage.setItem(ENV.IK.LOCAL_STORAGE.AUTH_USER, JSON.stringify(user));
+    return { ...state, user };
+  }),
+  on(userRemovePost, (state, { post }) => {
+    const user : IK_UserAuth = {
+      ...state.user!,
+      createdPosts : state.user!.createdPosts.filter((userPost) => userPost.id !== post.id)
+      }
 
     localStorage.setItem(ENV.IK.LOCAL_STORAGE.AUTH_USER, JSON.stringify(user));
     return { ...state, user };
-  })
+  }),
+
+  on(userAddComment, (state, { comment }) => {
+    comment.isUserOwner = true;
+    const user : IK_UserAuth = {
+      ...state.user!,
+      postComments : [...state.user!.postComments, comment]
+      }
+    localStorage.setItem(ENV.IK.LOCAL_STORAGE.AUTH_USER, JSON.stringify(user));
+    return { ...state, user };
+  }),
+
+  on(userAddSubComment , (state, { subComment }) => {
+    subComment.isUserOwner = true;
+    const pc = state.user!.postComments = [
+      ...state.user!.postComments,
+      subComment
+    ]
+    const user : IK_UserAuth = {
+      ...state.user!,
+      postComments : pc
+      }
+    localStorage.setItem(ENV.IK.LOCAL_STORAGE.AUTH_USER, JSON.stringify(user));
+    return { ...state, user };
+  }),
+
+
+
+
+
 )
+
+

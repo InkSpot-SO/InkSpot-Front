@@ -1,4 +1,4 @@
-import { IK_Post } from "../post/post.model";
+import { IK_Comment, IK_Post } from "../post/post.model";
 import { IK_UserBase, IK_UserDeepBase } from "./user-base.model";
 
 export type IK_UserRole = "ROLE_USER" | "ROLE_ADMIN";
@@ -7,12 +7,13 @@ export interface IK_UserAuth extends IK_UserDeepBase {
   token : string;
   refresh_token : string;
   likedPosts : IK_Post[];
+  postComments : IK_Comment[];
   favoritesPosts : IK_Post[];
   roles : IK_UserRole[];
 }
 
 export interface IK_UserAuthRequest {
-  username : string;
+    username : string;
   password : string;
 }
 

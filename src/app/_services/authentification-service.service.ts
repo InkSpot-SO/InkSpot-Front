@@ -60,8 +60,8 @@ export class AuthentificationService {
 
   refreshToken() : Observable<IK_UserAuth> {
     return this.http.post<IK_UserAuthResponse>('http://localhost:8000/api/token_refresh', {
-      refresh_token : this.user?.refresh_token
-    }).pipe(
+      "refresh_token": "1db85bf64da5e9e1487bb546148994374a3fa4cae4faf5cc3442d3ab3d9a6460533943cf06a12621990a4640ff60876d5f763bc920a5769cfb6346dd51ac76e7"
+  }).pipe(
       map((user) => {
         return this.formatResponseUser(user);
       }),
