@@ -1,0 +1,7 @@
+<div class="ik__profil--container">
+  <ng-container *ngIf="user">
+      <input type="text" nz-input placeholder="Username" [(ngModel)]="pseudo" />
+      <input type="text" nz-input placeholder="Email" disabled [(ngModel)]="user.username" />
+      <button (click)="onUpdate()" nz-button nzType="primary">Update</button>
+    </ng-container>
+</div>

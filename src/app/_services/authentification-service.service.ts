@@ -22,7 +22,18 @@ export class AuthentificationService {
       this.user = user;
     });
    }
-
+   updateUserInfos(user: IK_UserAuth) : Observable<IK_UserAuth> {
+    return this.http.put<IK_UserAuthResponse>('http://localhost:8000/api/users/'+user.id, user).pipe(
+      map((user) => {
+        this.NG_message.success('User infos updated');
+        return this.formatResponseUser(user);
+      }),
+      catchError((error) => {
+        this.NG_message.error('User infos update failed');
+        throw error;
+      })
+    );
+   };
   register(user: IK_UserAuthRegisterRequest) : Observable<IK_UserAuth> {
     const { messageId } = this.NG_message.loading('Registration...', { nzDuration: 0 });
     return this.http.post<IK_UserAuthResponse>('http://localhost:8000/api/register', user).pipe(
@@ -43,6 +54,7 @@ export class AuthentificationService {
     const { messageId } = this.NG_message.loading('Login...', { nzDuration: 0 });
     return this.http.post<IK_UserAuthResponse>('http://localhost:8000/api/login_check', user).pipe(
       map((user) => {
+        console.log('login', user)
         this.NG_message.remove(messageId);
         this.NG_message.success('Login success');
         return this.formatResponseUser(user);

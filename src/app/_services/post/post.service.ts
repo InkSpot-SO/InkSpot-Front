@@ -30,7 +30,8 @@ export class PostService {
 
   getWithQueryPaginated(page:number,searchTerm:string): Observable<IK_PostRequestReponse> {
     return this.http.get<IK_PostRequestReponse>(`http://localhost:8000/api/posts/all?page=${page}&searchTerm=${searchTerm}`).pipe(map((r) => {
-      const res = {
+    console.log(r);
+    const res = {
         ...r,
         datas: r.datas.map((post) => {
           return this.processPost(post);
@@ -41,13 +42,34 @@ export class PostService {
     ))
       ;
   }
+  getUserFavoritePosts() : Observable<IK_Post[]> {
+    return this.http.get<IK_Post[]>(`http://localhost:8000/api/users/${this.user?.id}/favorites`).pipe(map((posts) => {
+      return posts.map((post) => {
+
+        return this.processPost(post);
+      })
+    }));
+  }
+  getUserLikedPosts() : Observable<IK_Post[]> {
+    return this.http.get<IK_Post[]>(`http://localhost:8000/api/users/${this.user?.id}/likes`).pipe(map((posts) => {
+      return posts.map((post) => {
+        return this.processPost(post);
+      })
+    }));
+  }
+
+  getUserPosts() : Observable<IK_Post[]> {
+    return this.http.get<IK_Post[]>(`http://localhost:8000/api/users/${this.user?.id}/created`).pipe(map((posts) => {
+      return posts.map((post) => {
+        return this.processPost(post);
+      })
+    }));
+  }
 
   private processPost(post : IK_Post) {
     return {
       ...post,
       isUserOwner: this.user!.id === post.createdBy?.id,
-      likedByUser: this.user!.likedPosts.find((likedPost) => likedPost.id === post.id) ? true : false,
-      favoritedByUser: this.user!.favoritesPosts.find((favoritePost) => favoritePost.id === post.id) ? true : false,
       comments: (post.comments ?? []).map((comment) => {
         return {
           ...comment,

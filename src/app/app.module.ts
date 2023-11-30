@@ -32,6 +32,10 @@ import { CommentListComponent } from './_components/page_section/comment-list/co
 import { CommentListItemComponent } from './_components/page_section/comment_list/comment-list-item/comment-list-item.component';
 import { PostCreateComponent } from './_pages/common/post/post-create/post-create.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { MyPostComponent } from './_pages/common/my-post/my-post.component';
+import { ProfilComponent } from './_pages/common/profil/profil.component';
+import { LikedPostComponent } from './_pages/common/liked-post/liked-post.component';
+import { FavoritePostComponent } from './_pages/common/favorite-post/favorite-post.component';
 registerLocaleData(fr);
 
 @NgModule({
@@ -48,11 +52,16 @@ registerLocaleData(fr);
     PostSingleComponent,
     CommentListComponent,
     CommentListItemComponent,
-    PostCreateComponent
+    PostCreateComponent,
+    MyPostComponent,
+    ProfilComponent,
+    LikedPostComponent,
+    FavoritePostComponent
   ],
   imports: [
     ReactiveFormsModule,
     BrowserModule,
+
     AppRoutingModule,
     StoreModule.forRoot({
       authUser : authReducer,

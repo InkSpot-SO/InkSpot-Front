@@ -3,7 +3,7 @@ import { Router } from "@angular/router";
 import { createEffect, ofType, Actions } from "@ngrx/effects";
 import { NzMessageService } from "ng-zorro-antd/message";
 import { switchMap, map, catchError, of, scheduled } from "rxjs";
-import { login, loginFailure, loginSuccess, logout } from "src/_ngrx/actions/auth/login.actions";
+import { login, loginFailure, loginSuccess, logout, userInfosChange } from "src/_ngrx/actions/auth/login.actions";
 import { AuthentificationService } from "src/app/_services/authentification-service.service";
 
 @Injectable()
@@ -56,9 +56,23 @@ export class AuthEffects {
   );
 
 
+  $userInfosChange = createEffect(
+    () =>
+      this.actions$.pipe(
+          ofType(userInfosChange),
+        switchMap(action => {
+          return this._authService.updateUserInfos(action.user).pipe(
+          );
+        })
+      ),
+    { dispatch: false }
+  );
+
+
   constructor(
     private actions$: Actions,
     private _authService: AuthentificationService,
-    private router : Router
+    private router : Router,
+    private nzMessage : NzMessageService
     ) {}
 }

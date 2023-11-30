@@ -23,3 +23,6 @@ export const userRemoveComment = createAction('[User] Remove Comment', props<{ c
 
 export const userAddSubComment = createAction('[User] Add Sub Comment', props<{ subComment : IK_Comment , parentComments : IK_Comment, postId : number }>());
 export const userRemoveSubComment = createAction('[User] Remove Sub Comment', props<{ subCommentId : number , parentComments : number , postId : number }>());
+
+
+export const userInfosChange = createAction('[User] Infos Change', props<{ user: IK_UserAuth }>());

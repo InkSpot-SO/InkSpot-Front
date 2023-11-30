@@ -42,7 +42,7 @@
     <span nz-icon nzType="message"  [routerLink]="'/post/'+post.id+'?action=comment'"></span>
   </ng-template>
   <ng-template #actionEllipsis>
-    <ng-container *ngIf="post.favoritedByUser; else favoriteTemplate">
+    <ng-container *ngIf="post.favoriteByUser; else favoriteTemplate">
       <span nz-icon nzType="star" nzTheme="fill" (click)="favoritePost()"></span>
     </ng-container>
     <ng-template #favoriteTemplate>

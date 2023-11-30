@@ -29,3 +29,10 @@ ik-login,ik-register {
   width: 100%!important;
   height: 100%!important;
 }
+.ik__post--container {
+  @apply
+  w-full
+  h-full
+  overflow-y-auto
+  overflow-x-hidden
+}

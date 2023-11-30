@@ -1,5 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import { login, logout, loginFailure, loginSuccess, userAddLike, userRemoveLike, userAddFavorite, userRemoveFavorite, userAddPost, userRemovePost, userAddComment, userAddSubComment } from 'src/_ngrx/actions/auth/login.actions';
+import { login, logout, loginFailure, loginSuccess, userAddLike, userRemoveLike, userAddFavorite, userRemoveFavorite, userAddPost, userRemovePost, userAddComment, userAddSubComment, userInfosChange } from 'src/_ngrx/actions/auth/login.actions';
 import { IK_Comment } from 'src/_ngrx/models/post/post.model';
 import { IK_UserAuth } from 'src/_ngrx/models/user/user-auth.model';
 import { AuthUserState } from 'src/_ngrx/states/auth/auth-user.state';
@@ -107,10 +107,10 @@ export const authReducer = createReducer(
     return { ...state, user };
   }),
 
-
-
-
-
+  on(userInfosChange, (state, { user }) => {
+    localStorage.setItem(ENV.IK.LOCAL_STORAGE.AUTH_USER, JSON.stringify(user));
+    return { ...state, user };
+  }),
 )
 
 

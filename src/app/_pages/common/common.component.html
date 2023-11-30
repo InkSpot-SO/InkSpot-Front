@@ -1,36 +1,45 @@
-
 <nz-layout>
   <nz-sider nzCollapsible nzWidth="200px">
     <div class="logo"></div>
     <ul nz-menu nzTheme="dark" nzMode="inline">
       <!-- make profil submenu -->
       <li nz-menu-item [nzMatchRouterExact]="true" [routerLink]="'/'">
-        <i nz-icon nzType="file">
-        </i>
+        <i nz-icon nzType="file"> </i>
         <span>Posts</span>
       </li>
-      <li nz-menu-item [nzMatchRouterExact]="true"[routerLink]="'/chat'">
-        <i nz-icon nzType="message">
-        </i>
+      <!-- <li nz-menu-item [nzMatchRouterExact]="true" [routerLink]="'/chat'">
+        <i nz-icon nzType="message"> </i>
         <span>Chat</span>
+      </li> -->
     </ul>
   </nz-sider>
   <nz-layout>
     <nz-header>
       <!-- make user profil menu  with ng zorro dropdown menu with logout action -->
       <a nz-dropdown [nzDropdownMenu]="menu">
-        {{userName$ | async}}
+        {{ userName$ | async }}
         <i nz-icon nzType="down"></i>
       </a>
       <nz-dropdown-menu #menu="nzDropdownMenu">
-        <ul nz-menu >
-          <li nz-menu-item nzDanger (click)="onLogout()" >
+        <ul nz-menu>
+          <li nz-menu-item [routerLink]="'/profil'">
+            <span>Profile</span>
+          </li>
+          <li nz-menu-item [routerLink]="'/my-posts'">
+            <span>My posts</span>
+          </li>
+          <li nz-menu-item [routerLink]="'/liked'">
+            <span>Liked posts</span>
+          </li>
+          <li nz-menu-item [routerLink]="'/favorites'">
+            <span>Favorite posts</span>
+          <li nz-menu-item nzDanger (click)="onLogout()">
             <span>Logout</span>
+          </li>
         </ul>
       </nz-dropdown-menu>
     </nz-header>
     <nz-content>
-
       <div class="inner-content">
         <router-outlet></router-outlet>
       </div>

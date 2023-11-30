@@ -32,9 +32,11 @@ export class AuthentificationInterceptorInterceptor implements HttpInterceptor {
 
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<any> {
+    console.log('intercept', req.url, this.token)
     if ( req.url.includes('login_check') || req.url.includes('register') || req.url.includes('token_refresh') ) {
       return next.handle(req);
     }
+    console.log("pass")
     req = req.clone({
       setHeaders: {
         Authorization: `Bearer ${this.token}`,

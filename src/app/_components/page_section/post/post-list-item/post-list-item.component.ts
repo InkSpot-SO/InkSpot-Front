@@ -32,15 +32,15 @@ export class PostListItemComponent {
   }
   favoritePost() {
     if( !this.post ) return;
-    if ( this.post.favoritedByUser ) {
+    if ( this.post.favoriteByUser ) {
       this.store.dispatch(postRemoveFavorite({post:this.post}));
     } else {
       this.store.dispatch(postAddFavorite({post:this.post}));
     }
     this.post = {
       ...this.post,
-      favoritedByUser: !this.post.favoritedByUser,
-      favoritesCount: this.post.favoritedByUser ? this.post.favoritesCount! - 1 : this.post.favoritesCount! + 1
+      favoriteByUser: !this.post.favoriteByUser,
+      favoritesCount: this.post.favoriteByUser ? this.post.favoritesCount! - 1 : this.post.favoritesCount! + 1
     }
   }
 

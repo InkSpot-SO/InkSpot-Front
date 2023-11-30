@@ -8,11 +8,11 @@ import { IK_UserBase } from "../user/user-base.model";
     postsImages : IK_Image[];
     comments : IK_Comment[];
     createdBy? : IK_UserBase
-    likedByUser? : boolean;
     likesCount? : number;
     favoritesCount? : number;
-    favoritedByUser? : boolean;
     isUserOwner? : boolean;
+    likedByUser : boolean;
+    favoriteByUser : boolean;
   }
 
   export interface IK_Comment {

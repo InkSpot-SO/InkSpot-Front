@@ -10,6 +10,10 @@ import { authGuard } from './_guards/auth/auth.guard';
 import { ChatComponent } from './_pages/common/chat/chat.component';
 import { PostSingleComponent } from './_pages/common/post/post-single/post-single.component';
 import { PostCreateComponent } from './_pages/common/post/post-create/post-create.component';
+import { ProfilComponent } from './_pages/common/profil/profil.component';
+import { MyPostComponent } from './_pages/common/my-post/my-post.component';
+import { LikedPostComponent } from './_pages/common/liked-post/liked-post.component';
+import { FavoritePostComponent } from './_pages/common/favorite-post/favorite-post.component';
 const routes: Routes = [
   {
     path: 'auth',
@@ -56,9 +60,26 @@ const routes: Routes = [
             component : PostSingleComponent
           }
         ]
+      },
+      {
+        path : 'profil',
+        component : ProfilComponent
+      },
+      {
+        path : 'my-posts',
+        component : MyPostComponent
+      },
+      {
+        path : 'liked',
+        component : LikedPostComponent
+      },
+      {
+        path : 'favorites',
+        component : FavoritePostComponent
       }
     ]
   },
+
 ];
 
 @NgModule({
